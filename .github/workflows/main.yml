@@ -9,10 +9,10 @@ jobs:
   CI:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: 3.8
 
@@ -20,7 +20,7 @@ jobs:
          run: pip3 install virtualenv
 
       - name: Virtual ENV 
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         id: cache-venv
         with:
            path: venv
@@ -43,7 +43,7 @@ jobs:
         run: cd ./api && zip -g ../api.zip -r .
 
       - name: Upload zip file artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: api
           path: api.zip
