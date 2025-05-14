@@ -14,7 +14,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: 3.9
 
       -  name: Install Python Virtual Env
          run: pip3 install virtualenv
@@ -36,7 +36,7 @@ jobs:
 
       - name: Create archive of dependencies
         run: |
-          cd ./venv/lib/python3.8/site-packages
+          cd ./venv/lib/python3.9/site-packages
           zip -r9 ../../../../api.zip .
         
       - name: Add API files to Zip file
