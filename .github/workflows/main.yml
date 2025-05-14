@@ -100,6 +100,11 @@ jobs:
 
           echo "API Gateway deployed with API ID: $api_id, Deployment ID: $deployment_id"
 
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-east-1
+
       - name: Grant API Gateway permission to invoke Lambda
         run: |
           aws lambda add-permission --function-name fastapilambda --principal apigateway.amazonaws.com --statement-id $(uuidgen) --action lambda:InvokeFunction --source-arn arn:aws:apigateway:us-east-1::/restapis/*/resources/*/methods/GET
