@@ -1,2 +1,6 @@
 fastapi
 mangum
+uvicorn
+pytest
+httpx
+requests     

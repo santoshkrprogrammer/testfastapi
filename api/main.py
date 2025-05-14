@@ -8,6 +8,10 @@ import socket
 # import pymssql
 
 
+@app.get("/")
+async def root():
+    return {"message": "This is home page"}
+
 
 @app.get("/data")
 async def root():
