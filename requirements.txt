@@ -1,4 +1,2 @@
 fastapi
 mangum
-requests
-pandas
