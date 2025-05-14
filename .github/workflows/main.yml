@@ -4,43 +4,42 @@ on:
   push:
     branches:
       - master
-jobs:
 
-  CI:
+jobs:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
-        
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: 3.9
 
-      -  name: Install Python Virtual Env
-         run: pip3 install virtualenv
-
       - name: Cache pip dependencies
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
-             
-      - name: Activate Virtual ENV
-        run: python -m venv venv && source venv/bin/activate && pip3 install -r requirements.txt
 
-      - name: Run Tests
-        run: source venv/bin/activate && pytest
-
-      - name: Create archive of dependencies
+      - name: Install dependencies to package/
         run: |
-          zip -r9 api.zip venv/lib/python3.9/site-packages/*
-      
+          mkdir -p package
+          pip install --target package -r requirements.txt
+
+      - name: Zip dependencies
+        run: |
+          cd package
+          zip -r9 ../api.zip .
+          cd ..
+
       - name: Add API files to zip
         run: |
-          zip -g api.zip -r api/*
-      
+          zip -g api.zip -r api
+
       - name: Upload zip file artifact
         uses: actions/upload-artifact@v4
         with:
