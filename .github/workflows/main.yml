@@ -19,15 +19,14 @@ jobs:
       -  name: Install Python Virtual Env
          run: pip3 install virtualenv
 
-      - name: Virtual ENV 
+      - name: Cache pip dependencies
         uses: actions/cache@v4
-        id: cache-venv
         with:
-           path: venv
-           key: ${{ runner.os }}-venv-${{ hashFiles('**/requirements*.txt') }}
-           restore-keys:
-             ${{ runner.os }}-venv-
-       
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+             
       - name: Activate Virtual ENV
         run: python -m venv venv && source venv/bin/activate && pip3 install -r requirements.txt
 
