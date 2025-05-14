@@ -19,7 +19,7 @@ jobs:
       -  name: Install Python Virtual Env
          run: pip3 install virtualenv
 
-      - name: Virtual ENV 
+      - name: Virtual ENV
         uses: actions/cache@v4
         id: cache-venv
         with:
@@ -53,10 +53,10 @@ jobs:
     needs: [CI]
     if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     steps:
-      - name: Install AWS CLI
-        uses:  unfor19/install-aws-cli-action@v1
+      - name: Install AWS CLI v2
+        uses: unfor19/install-aws-cli-action@v1
         with:
-          version: 1
+          version: 2
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY}}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
