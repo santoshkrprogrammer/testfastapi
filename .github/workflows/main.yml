@@ -81,7 +81,36 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY}}
           AWS_DEFAULT_REGION: us-east-1
     
-        
+      - name: Create API Gateway
+        run: |
+          # Step 1: Create API Gateway
+          API_ID=$(aws apigateway create-rest-api --name "FastAPI-Gateway" --query "id" --output text)
+
+          # Step 2: Get root resource ID
+          PARENT_ID=$(aws apigateway get-resources --rest-api-id $API_ID --query "items[?path=='/'].id" --output text)
+
+          # Step 3: Create /api3 resource
+          RESOURCE_ID=$(aws apigateway create-resource --rest-api-id $API_ID --parent-id $PARENT_ID --path-part api3 --query "id" --output text)
+
+          # Step 4: Create GET method for /api3
+          aws apigateway put-method --rest-api-id $API_ID --resource-id $RESOURCE_ID --http-method GET --authorization-type "NONE"
+
+          # Step 5: Integrate with Lambda
+          aws apigateway put-integration \
+            --rest-api-id $API_ID \
+            --resource-id $RESOURCE_ID \
+            --http-method GET \
+            --type AWS_PROXY \
+            --integration-http-method POST \
+            --uri arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:645937553410:function:fastapilambda
+
+          # Step 6: Deploy the API
+          aws apigateway create-deployment --rest-api-id $API_ID --stage-name prod
+
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-east-1
       
   
              
