@@ -36,5 +36,11 @@ async def api3():
     return {"message": "This is a third api for testing vnet with vpn access"}
 
 
+@app.get("/api4")
+async def api4():
+    print('This is api4')
+    return {"message": "This is a fourth api for testing vnet with vpn access"}
+
+
 
 handler = Mangum(app)
