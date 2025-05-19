@@ -32,7 +32,7 @@ jobs:
         image: ${{ secrets.DOCKER_USERNAME }}/fastapideploy:${{ github.event.inputs.imageTag }}
 
     - name: Deploy to ECS Service
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v2
       with:
         cluster: ${{ secrets.ECS_CLUSTER_NAME }}
         service: ${{ secrets.ECS_SERVICE_NAME }}
