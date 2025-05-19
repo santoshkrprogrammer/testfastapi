@@ -1,0 +1,25 @@
+name: Build Docker Image
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Login to Docker Hub
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+    - name: Build and Push Image
+      run: |
+        IMAGE_TAG=$(date +%Y%m%d%H%M%S)
+        IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/fastapideploy
+        docker build -t $IMAGE_NAME:$IMAGE_TAG .
+        docker push $IMAGE_NAME:$IMAGE_TAG
+        echo "image=$IMAGE_NAME:$IMAGE_TAG" >> $GITHUB_OUTPUT
+    - name: Upload metadata
+      uses: actions/upload-artifact@v3
+      with:
+        name: image-tag
+        path: image-tag.txt
