@@ -41,6 +41,12 @@ async def api4():
     print('This is api4')
     return {"message": "This is a fourth api for testing vnet with vpn access"}
 
+@app.get("/pom")
+async def pom():
+    print('This is api4')
+    return {"message": "This is a new pom test"}
+
+
 
 
 handler = Mangum(app)
