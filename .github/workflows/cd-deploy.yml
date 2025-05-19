@@ -21,7 +21,7 @@ jobs:
 
     - name: Download task definition 
       run: |
-       aws ecs describe-task-definition - task-definition ecs-ci-cd-task-def - query taskDefinition > task-definition.json
+       aws ecs describe-task-definition --task-definition ecs-ci-cd-task-def --query taskDefinition > task-definition.json
           
     - name: Update ECS Task Definition
       id: render-task-def
