@@ -19,13 +19,17 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
 
+    - name: Download task definition 
+      run: |
+       aws ecs describe-task-definition - task-definition ecs-ci-cd-task-def - query taskDefinition > task-definition.json
+          
     - name: Update ECS Task Definition
       id: render-task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
-        task-definition: ${{ secrets.ECS_TASK_DEFINITION }}
+        task-definition: task-definition.json
         container-name: fastapi-container
-        image: ${{ secrets.DOCKER_USERNAME }}/your-image-name:${{ github.event.inputs.imageTag }}
+        image: ${{ secrets.DOCKER_USERNAME }}/fastapideploy:${{ github.event.inputs.imageTag }}
 
     - name: Deploy to ECS Service
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
